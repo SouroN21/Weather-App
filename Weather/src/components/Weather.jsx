@@ -10,31 +10,38 @@ import snow_icon from '../assets/snow.png';
 import wind_icon from '../assets/wind.png';
 
 const Weather =()=>{
-    const [weatherData,setWeatherData] = useState(false);
-    const inputRef=useRef()
+    const [weatherData, setWeatherData] = useState({
+        humidity: null,
+        windSpeed: null,
+        temperature: null,
+        location: '',
+        icon: clear_icon,
+    });
+    const inputRef = useRef();
 
-    const allIcons={
-        "01d":clear_icon,
-        "01n":clear_icon,
-        "02d":cloud_icon,
-        "02n":cloud_icon,
-        "03d":cloud_icon,
-        "03n":cloud_icon,
-        "04d":drizzle_icon,
-        "04n":drizzle_icon,
-        "09d":rain_icon,
-        "09n":rain_icon,
-        "10d":rain_icon,
-        "10n":rain_icon,
-        "11d":clear_icon,
-        "11n":clear_icon,
-        "13d":snow_icon,
-        "13n":snow_icon,
-        "50d":clear_icon,
-        "50n":clear_icon,
-    }
-    const search = async(city)=>{
-        if(city==""){
+    const allIcons = {
+        "01d": clear_icon,
+        "01n": clear_icon,
+        "02d": cloud_icon,
+        "02n": cloud_icon,
+        "03d": cloud_icon,
+        "03n": cloud_icon,
+        "04d": drizzle_icon,
+        "04n": drizzle_icon,
+        "09d": rain_icon,
+        "09n": rain_icon,
+        "10d": rain_icon,
+        "10n": rain_icon,
+        "11d": clear_icon,
+        "11n": clear_icon,
+        "13d": snow_icon,
+        "13n": snow_icon,
+        "50d": clear_icon,
+        "50n": clear_icon,
+    };
+
+    const search = async (city) => {
+        if (city === "") {
             alert("Enter City Name");
             return;
         }
@@ -45,37 +52,50 @@ const Weather =()=>{
             const response = await fetch(url);
             const data = await response.json();
             
-            if(!response.ok){
+            if (!response.ok) {
                 alert("City not found");
                 return;
             }
 
-            const icon = allIcons[data.weather[0].icon] || clear_icon;
+                const icon = allIcons[data.weather[0].icon] || cloud_icon;
             
-            setWeatherData({
-                humidity:data.main.humidity,
-                windSpeed:data.wind.speed,
-                temperature:Math.floor(data.main.temp),
-                location:data.name,
-                icon:icon
-            })
+                setWeatherData({
+                    humidity: data.main.humidity,
+                    windSpeed: data.wind.speed,
+                    temperature: Math.floor(data.main.temp),
+                    location: data.name,
+                    icon: icon
+                });
             
-        }catch (error) {
-            setWeatherData(false);
-            confirm.error("Error fetching Data"); 
-        }
-    }
-    useEffect(()=>{
-        search();
-    },[])
-    
+            } catch (error) {
+                alert("Error fetching data");
+                setWeatherData({
+                    humidity: null,
+                    windSpeed: null,
+                    temperature: null,
+                    location: '',
+                    icon: clear_icon
+                });
+            }
+        };
+        const handleKeyPress = (event) => {
+            if (event.key === 'Enter') {
+                search(inputRef.current.value);
+            }
+        };
+   
+    useEffect(() => {
+        search("Sri Lanka");
+    }, []);
 
   return (
-    <div className="wather">
+    <div className="weather ">
         <div className="search-bar">
-            <input ref={inputRef} type="text" placeholder="Search"/>
+            <input ref={inputRef} type="text" placeholder="Search"onKeyDown={handleKeyPress}/>
             <img src={search_icon} alt="search" onClick={()=>search(inputRef.current.value)}/>
-        </div>  
+        </div>
+        {weatherData.temperature !== null ? (
+                <> 
         <img src={clear_icon} alt="weather" className="weather-icon"/>
         <p className="temperature">{weatherData.temperature}°C</p>
         <p className="location">{weatherData.location}</p>  
@@ -94,7 +114,10 @@ const Weather =()=>{
                     <span>wind</span>
                 </div>
             </div>
-        </div>    
+        </div>   </>
+           ) : (
+            <p>No weather data available.</p>
+        )}
     </div>
   )
   
