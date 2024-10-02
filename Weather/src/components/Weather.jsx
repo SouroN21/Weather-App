@@ -1,14 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
 import'./Weather.css';
-import search_icon from '../assets/search.png';
-import clear_icon from '../assets/clear.png';
-import cloud_icon from '../assets/cloud.png';
-import drizzle_icon from '../assets/drizzle.png';
-import humidity_icon from '../assets/humidity.png';
-import rain_icon from '../assets/rain.png';
-import snow_icon from '../assets/snow.png';
-import wind_icon from '../assets/wind.png';
 
+import search_icon from '../assets/search.png';
+import wind_icon from '../assets/wind.png';
+import humidity_icon from '../assets/humidity.png';
+
+import clear_icon from '../assets/clear.png';
+import moon from '../assets/moon.png';
+import fewclouds from '../assets/fewclouds.png';
+import fewcloudsn from '../assets/fewcloudsn.png';
+import cloud_icon from '../assets/cloud.png';
+import cloud_iconn from '../assets/cloudn.png';
+import drizzle_icon from '../assets/brokenclouds.png';
+import drizzle_iconn from '../assets/brokencloudsn.png';
+import showerrain from '../assets/showerrain.png';
+import showerrainn from '../assets/showerrainn.png';
+import rain_icon from '../assets/rain.png';
+import rain_iconn from '../assets/rainn.png';
+import thunderstorm from  '../assets/thunderstorm.png';
+import thunderstormn from '../assets/thunderstormn.png';
+import snow_icon from '../assets/snow.png';
+import mist from '../assets/mist.png';
 const Weather =()=>{
     const [weatherData, setWeatherData] = useState({
         humidity: null,
@@ -21,23 +33,23 @@ const Weather =()=>{
 
     const allIcons = {
         "01d": clear_icon,
-        "01n": clear_icon,
-        "02d": cloud_icon,
-        "02n": cloud_icon,
+        "01n": moon,
+        "02d": fewclouds,
+        "02n": fewcloudsn,
         "03d": cloud_icon,
-        "03n": cloud_icon,
+        "03n": cloud_iconn,
         "04d": drizzle_icon,
-        "04n": drizzle_icon,
-        "09d": rain_icon,
-        "09n": rain_icon,
+        "04n": drizzle_iconn,
+        "09d": showerrain,
+        "09n": showerrainn,
         "10d": rain_icon,
-        "10n": rain_icon,
-        "11d": clear_icon,
-        "11n": clear_icon,
+        "10n": rain_iconn,
+        "11d": thunderstorm,
+        "11n": thunderstormn,
         "13d": snow_icon,
         "13n": snow_icon,
-        "50d": clear_icon,
-        "50n": clear_icon,
+        "50d": mist,
+        "50n": mist,
     };
 
     const search = async (city) => {
@@ -96,7 +108,7 @@ const Weather =()=>{
         </div>
         {weatherData.temperature !== null ? (
                 <> 
-        <img src={clear_icon} alt="weather" className="weather-icon"/>
+        <img src={weatherData.icon} alt="weather" className="weather-icon"/>
         <p className="temperature">{weatherData.temperature}°C</p>
         <p className="location">{weatherData.location}</p>  
         <div className="weather-data">
